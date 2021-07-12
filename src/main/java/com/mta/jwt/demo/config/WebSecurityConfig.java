@@ -29,10 +29,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().
-                authorizeRequests().antMatchers("/").permitAll().and().
-                authorizeRequests().anyRequest().authenticated().and().httpBasic();
-
+        http.csrf().disable();
 
         // Các trang không yêu cầu login như vậy ai cũng có thể vào
         // được admin hay user hoặc guest có thể vào các trang
@@ -44,9 +41,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // 2  ROLE_USER và ROLEADMIN thì ta lấy từ database ra cái mà mình chèn vô
         // ở bước 1 (chuẩn bị database)
 
-        http.authorizeRequests().antMatchers("/userInfo").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')");
+        http.authorizeRequests().antMatchers("/home").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')");
         // Trang chỉ dành cho ADMIN
         http.authorizeRequests().antMatchers("/admin").access("hasRole('ROLE_ADMIN')");
+        //http.httpBasic();
         http.authorizeRequests().and().formLogin()
                 .loginProcessingUrl("/login_web")
                 .loginPage("/login")
@@ -70,16 +68,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/css/**","/js/**","/img/**");
+        web.ignoring().antMatchers("/css/**", "/js/**", "/img/**");
     }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication().passwordEncoder(passwordEncoder()).
-                withUser("admin").
-                password("$2a$10$FNTqRLh3kIm/dljLpp5GvuGWFB1QcQRIoN7Fbkt5MZf866p0UMRUO").
-                roles("ADMIN");
-    }
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.inMemoryAuthentication().passwordEncoder(passwordEncoder());
+//                withUser("admin").
+//                password("$2a$10$FNTqRLh3kIm/dljLpp5GvuGWFB1QcQRIoN7Fbkt5MZf866p0UMRUO").
+//                roles("ADMIN");
+//    }
 
 
     @Bean

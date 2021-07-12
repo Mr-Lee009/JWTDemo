@@ -1,5 +1,6 @@
 package com.mta.jwt.demo.mapper;
 
+import com.mta.jwt.demo.model.UserEntity;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

@@ -1,10 +1,17 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-        "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>$Title$</title>
+    <title>Access Denied</title>
 </head>
+
 <body>
-$END$
+<!-- Include _menu.html -->
+<th:block th:include="/menu"></th:block>
+
+<h3 th:if="${message != null}" th:utext="${message}" style="color: red;"></h3>
+
+<div th:if="${userInfo != null}" th:utext="${userInfo}"></div>
+
 </body>
+
 </html>

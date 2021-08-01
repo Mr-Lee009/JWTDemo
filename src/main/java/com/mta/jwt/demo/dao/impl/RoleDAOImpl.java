@@ -21,7 +21,7 @@ public class RoleDAOImpl implements RoleDAO {
     @Override
     @Transactional
     public List<RoleEntity> findRule(long ID) throws SQLException {
-        String sql = "select * from role where ID in (select ID_RULE from role_user where ID = ?)";
+        String sql = "select * from role where ID in (select ID_RULE from role_user where ID_USER = ?)";
         return this.jdbcTemplate.query(sql, new RoleMapper(), ID);
     }
 }

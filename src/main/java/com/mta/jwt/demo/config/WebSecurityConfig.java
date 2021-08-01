@@ -23,6 +23,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
+        // Sét đặt dịch vụ để tìm kiếm User trong Database.
+        // Và sét đặt PasswordEncoder.
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 
@@ -41,9 +43,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // 2  ROLE_USER và ROLEADMIN thì ta lấy từ database ra cái mà mình chèn vô
         // ở bước 1 (chuẩn bị database)
 
-        http.authorizeRequests().antMatchers("/home").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')");
+        //http.authorizeRequests().antMatchers("/home").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')");
         // Trang chỉ dành cho ADMIN
-        http.authorizeRequests().antMatchers("/admin").access("hasRole('ROLE_ADMIN')");
+        //http.authorizeRequests().antMatchers("/admin").access("hasAnyRole('ROLE_ADMIN','ROLE_SA')");
+        // Khi người dùng đã login, với vai trò XX.
+        // Nhưng truy cập vào trang yêu cầu vai trò YY,
+        // Ngoại lệ AccessDeniedException sẽ ném ra.
+        // Cấu hình cho Logout Page.
+
+        http.authorizeRequests().and().exceptionHandling().accessDeniedPage("/403");
         //http.httpBasic();
         http.authorizeRequests().and().formLogin()
                 .loginProcessingUrl("/login_web")
@@ -51,7 +59,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .defaultSuccessUrl("/home")
                 .failureUrl("/login?error=true")
                 .usernameParameter("username")
-                .passwordParameter("password");
+                .passwordParameter("password")
+                // cau hinh logout
+                .and().logout()
+                .logoutUrl("/logout_web")
+                .logoutSuccessUrl("/logout");
 
         // Cấu hình Remember Me. Ở form login bước 3, ta có 1 nút remember me.
         // Nếu người dùng tick vào đó ta sẽ dùng cookie lưu lại trong 24h
@@ -84,5 +96,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 
 }

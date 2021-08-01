@@ -5,9 +5,10 @@
     <title>home</title>
 </head>
 <body>
+<th:block th:include="/menu"></th:block>
 <!--<h1 th:text="#${home}"></h1>-->
-<h1 th:text="#{msg.loginPage}"></h1>
-<h1 th:text="${message}"></h1>
-<h1 th:text="${rule}"></h1>
+<h1>HOME PAGE</h1>
+<!--<h1 th:text="${message}"></h1>-->
+<h1 th:text="${userInfo}"></h1>
 </body>
 </html>

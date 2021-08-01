@@ -1,10 +1,17 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-        "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+<div xmlns:th="http://www.thymeleaf.org"
+     style="border: 1px solid #ccc;padding:5px;margin-bottom:20px;">
+
+    <a th:href="@{/}">Home</a>
+
+    | &nbsp;
+
+    <a th:href="@{/home}">User Info</a>
+
+    | &nbsp;
+
+    <a th:href="@{/admin}">Admin</a>
+
+    | &nbsp;
+
+    <a th:if="${#request.userPrincipal != null}" th:href="@{/logout_web}">Logout</a>
+</div>

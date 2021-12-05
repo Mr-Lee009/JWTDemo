@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layouts/main-layout :: main-fragment(
+                                                ~{::title},
+                                                ~{:: #home-static-resources},
+                                                ~{:: #home-header},
+                                                ~{:: #home-nav},
+                                                ~{:: #home-main-content},
+                                                ~{:: #home-footer}
+                                               )}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title> String userName = principal.getName();
+</head>
+<body>
+<!-- Include _menu.html -->
+<th:block th:include="/menu"></th:block>
+
+<!--<div id="home-nav" th:replace="~{/fragments/app-fragments :: nav-default}">-->
+<!--    Home Nav-->
+<!--</div>-->
+
+<!--<div id="home-footer" th:replace="~{/fragments/app-fragments :: copyright}">-->
+<!--    Footer-->
+<!--</div>-->
+<b>Day la trang chu</b>
+</body>
+</html>

@@ -5,6 +5,8 @@
     <title>home</title>
 </head>
 <body>
+<!-- Include _menu.html -->
+<th:block th:include="/menu"></th:block>
 <!--<h1 th:text="#${home}"></h1>-->
 <h1 th:text="#{msg.loginPage}"></h1>
 <h1 th:text="${message}"></h1>

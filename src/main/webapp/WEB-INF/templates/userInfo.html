@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Predefined Object #response</h1>
+<h3>#response.headerNames (java.utils.Enumeration)</h3>
+<ul>
+    <th:block th:each="headerName : ${#request.headerNames}">
+        <li th:utext="${headerName}">Header Name</li>
+    </th:block>
+</ul>
+
+<h1>Variable: flower, iter</h1>
+<table border="1">
+    <tr>
+        <th>No</th>
+        <th>Flower Name</th>
+    </tr>
+    <!--
+         Local Variable: flower
+         Local Variable: iter (Iterator).
+       -->
+    <tr th:each="flower, iter : ${flowers}">
+        <td th:utext="${iter.count}">No</td>
+        <td th:utext="${flower}">Flower Name</td>
+    </tr>
+</table>
+
+<span th:utext="${#session.getAttribute('ducla')}"></span>
+
+<!-- Local variable: firstName, lastName, fullName -->
+<div th:with="firstName = true, lastName = 'Smith', fullName = ${firstName} +' ' + ${lastName}">
+    First Name: <span th:utext="${firstName}"></span>
+    <br>
+    Last Name: <span th:utext="${lastName}"></span>
+    <br>
+    Full Name: <span th:utext="${fullName}"></span>
+
+    <th:block th:if="firstName?true:false">
+        <h1>AHIHI ABC 1</h1>
+        <h2>AHIHI ABC 3</h2>
+    </th:block>
+</div>
+
+<div th:if="1" style="color: #777777">
+    <h1>AHIHI ABC</h1>
+</div>
+</body>
+</html>

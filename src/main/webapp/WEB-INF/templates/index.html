@@ -1,28 +1,25 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{layouts/main-layout :: main-fragment(
-                                                ~{::title},
-                                                ~{:: #home-static-resources},
-                                                ~{:: #home-header},
-                                                ~{:: #home-nav},
-                                                ~{:: #home-main-content},
-                                                ~{:: #home-footer}
-                                               )}">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title> String userName = principal.getName();
+    <title>Title</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 <body>
 <!-- Include _menu.html -->
 <th:block th:include="/menu"></th:block>
 
-<!--<div id="home-nav" th:replace="~{/fragments/app-fragments :: nav-default}">-->
-<!--    Home Nav-->
-<!--</div>-->
 
-<!--<div id="home-footer" th:replace="~{/fragments/app-fragments :: copyright}">-->
-<!--    Footer-->
-<!--</div>-->
+<div id="home-nav" th:replace="~{/fragments/app-fragments :: navigation-admin}">
+    Home Nav
+</div>
+<div id="carousel-admin" th:include="~{/fragments/app-fragments :: carousel-admin}"></div>
+
+<div id="home-footer" th:replace="~{/fragments/app-fragments :: footer}">
+    Footer
+</div>
 <b>Day la trang chu</b>
 </body>
 </html>

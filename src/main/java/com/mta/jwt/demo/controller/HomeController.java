@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import com.mta.jwt.demo.utils.WebUtils;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.security.Principal;
 import java.util.List;
 
@@ -65,7 +66,6 @@ public class HomeController {
     public String login(HttpServletRequest request) {
         BCryptPasswordEncoder encode = new BCryptPasswordEncoder();
         System.out.println(encode.encode("admin"));
-
         request.setAttribute("login","TRANG LOGIN");
         request.setAttribute("msg",environment.getProperty("msg.loginPage",null,null));
         return "login";
@@ -84,5 +84,25 @@ public class HomeController {
         }
         return "403Page";
     }
+
+    @RequestMapping(value = "/userInfo", method = RequestMethod.GET)
+    public String userInfo(Model model, Principal principal,HttpServletRequest request) {
+        if (principal != null) {
+            User loginedUser = (User) ((Authentication) principal).getPrincipal();
+            String userInfo = WebUtils.toString(loginedUser);
+            model.addAttribute("userInfo", userInfo);
+            String message = "Hi " + principal.getName() + "<br> You do not have permission to access this page!";
+            model.addAttribute("message", message);
+            model.addAttribute("username", loginedUser.getUsername());
+        }
+
+        String[] flowers = new String[] {"Rose","Lily", "Tulip", "Carnation", "Hyacinth" };
+        model.addAttribute("flowers", flowers);
+
+        HttpSession session = request.getSession();
+        session.setAttribute("ducla","LE ANH DUC");
+        return "userInfo";
+    }
+
 
 }

@@ -19,11 +19,13 @@ public class ProductController {
         return "Create Data OK!";
     }
 
+    // get all
     @RequestMapping(value = "/getAll", method = RequestMethod.GET)
     List<ProductDTO> getAll() {
         return productService.getAll();
     }
 
+    // comment searchByName
     @RequestMapping(value = "/searchByName/{name}", method = RequestMethod.GET)
     List<ProductDTO> getAll(@PathVariable("name") String name) {
         return productService.searchByName(name);

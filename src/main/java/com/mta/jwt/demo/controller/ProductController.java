@@ -29,11 +29,13 @@ public class ProductController {
         return productService.searchByName(name);
     }
 
+    //sortByPrice
     @RequestMapping(value = "/sortByPrice", method = RequestMethod.GET)
     List<ProductDTO> sortByPrice() {
         return productService.sortByPrice();
     }
 
+    // add
     @RequestMapping(value = "/add", method = RequestMethod.PUT)
     String add(@RequestBody ProductDTO item) {
         try {

@@ -8,7 +8,6 @@ public class JwtResponse implements Serializable {
 	private final String jwttoken;
 
 	//public JwtResponse (){};
-
 	public JwtResponse(String jwttoken) {
 		this.jwttoken = jwttoken;
 	}

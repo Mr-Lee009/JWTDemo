@@ -3,15 +3,17 @@ package com.mta.jwt.demo.controller;
 import com.mta.jwt.demo.dto.ProductDTO;
 import com.mta.jwt.demo.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/product")
+@RequestMapping("/api/product")
 public class ProductController {
     @Autowired
     ProductService productService;
+
 
     @RequestMapping(value = "/createData", method = RequestMethod.GET)
     String createData() {
@@ -19,21 +21,27 @@ public class ProductController {
         return "Create Data OK!";
     }
 
+    // get all
+    @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "/getAll", method = RequestMethod.GET)
     List<ProductDTO> getAll() {
         return productService.getAll();
     }
 
+    // comment searchByName
     @RequestMapping(value = "/searchByName/{name}", method = RequestMethod.GET)
     List<ProductDTO> getAll(@PathVariable("name") String name) {
         return productService.searchByName(name);
     }
 
+    //sortByPrice
     @RequestMapping(value = "/sortByPrice", method = RequestMethod.GET)
     List<ProductDTO> sortByPrice() {
         return productService.sortByPrice();
     }
 
+    // add
+    @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "/add", method = RequestMethod.PUT)
     String add(@RequestBody ProductDTO item) {
         try {

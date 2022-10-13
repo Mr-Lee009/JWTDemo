@@ -10,9 +10,13 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.*;
+import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 import org.springframework.security.web.authentication.rememberme.InMemoryTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Configuration
 @EnableWebSecurity
@@ -22,7 +26,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private UserDetailsServiceImpl userDetailsService;
 
     @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 
@@ -59,7 +63,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // Nếu người dùng tick vào đó ta sẽ dùng cookie lưu lại trong 24h
         http.authorizeRequests().and().rememberMe()
                 .tokenRepository(this.persistentTokenRepository())
-                .tokenValiditySeconds(15*60);
+                .tokenValiditySeconds(15 * 60);
     }
 
     @Bean
@@ -84,7 +88,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        String idForEncode = "bcrypt";
+        Map encoders = new HashMap<>();
+        encoders.put(idForEncode, new BCryptPasswordEncoder());
+        encoders.put("noop", NoOpPasswordEncoder.getInstance());
+        encoders.put("pbkdf2", new Pbkdf2PasswordEncoder());
+        encoders.put("scrypt", new SCryptPasswordEncoder());
+        encoders.put("sha256", new StandardPasswordEncoder());
+
+        PasswordEncoder passwordEncoder = new DelegatingPasswordEncoder(idForEncode, encoders);
+        return passwordEncoder;
+    }
+
+    public static void main(String[] args) {
+        PasswordEncoder passwordEncoder = new Pbkdf2PasswordEncoder("admin",20);
+        System.out.println(passwordEncoder.encode("admin"));
     }
 
 }

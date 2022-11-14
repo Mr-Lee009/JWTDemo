@@ -1,7 +1,6 @@
 package com.mta.jwt.demo.controller;
 
-import com.mta.jwt.demo.dao.UserDAO;
-import com.mta.jwt.demo.model.UserEntity;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,13 +21,6 @@ import java.util.List;
 
 @Controller
 public class HomeController {
-
-    @Autowired
-    UserDAO userDAO;
-
-    @Autowired
-    Environment environment;
-
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index() {
@@ -64,10 +56,10 @@ public class HomeController {
 
     @RequestMapping(value = "/login",method = RequestMethod.GET)
     public String login(HttpServletRequest request) {
-        BCryptPasswordEncoder encode = new BCryptPasswordEncoder();
-        System.out.println(encode.encode("admin"));
-        request.setAttribute("login","TRANG LOGIN");
-        request.setAttribute("msg",environment.getProperty("msg.loginPage",null,null));
+//        BCryptPasswordEncoder encode = new BCryptPasswordEncoder();
+//        System.out.println(encode.encode("admin"));
+//        request.setAttribute("login","TRANG LOGIN");
+//        request.setAttribute("msg",environment.getProperty("msg.loginPage",null,null));
         return "login";
     }
 

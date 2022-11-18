@@ -1,8 +1,6 @@
 package com.mta.jwt.demo.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.Instant;
@@ -10,6 +8,8 @@ import java.time.Instant;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Getter
+@Setter
 @Entity(name = "refreshtoken")
 public class RefreshToken {
     @Id

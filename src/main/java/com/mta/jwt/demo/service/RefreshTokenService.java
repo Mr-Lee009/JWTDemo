@@ -1,23 +1,30 @@
 package com.mta.jwt.demo.service;
 
 import com.mta.jwt.demo.entity.RefreshToken;
+import com.mta.jwt.demo.entity.User;
 import com.mta.jwt.demo.exception.TokenRefreshException;
 import com.mta.jwt.demo.repository.RefreshTokenRepository;
 import com.mta.jwt.demo.repository.UserRepository;
-import jdk.nashorn.internal.runtime.options.Option;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.Instant;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class RefreshTokenService {
     @Value("${app.jwtRefreshExpirationMs}")
     private Long refreshTokenDurationMs;
+
+    @Value("${app.jwtRefreshSecret}")
+    private String jwtRefreshSecret;
 
     @Autowired
     private RefreshTokenRepository refreshTokenRepository;
@@ -29,12 +36,29 @@ public class RefreshTokenService {
         return refreshTokenRepository.findByToken(token);
     }
 
-    public RefreshToken createRefreshToken(Long userId) {
+    public RefreshToken createRefreshToken(String userId) {
         RefreshToken refreshToken = new RefreshToken();
 
-        refreshToken.setUser(userRepository.findById(userId).get());
+        User user = userRepository.findById(userId).get();
+
+        refreshToken.setUser(user);
         refreshToken.setExpiryDate(Instant.now().plusMillis(refreshTokenDurationMs));
-        refreshToken.setToken(UUID.randomUUID().toString());
+        //refreshToken.setToken(UUID.randomUUID().toString());
+
+        Map<String,Object> claim = new HashMap<>();
+        claim.put("a","b");
+        claim.put("a2","b2");
+        claim.put("a3","b3");
+
+        refreshToken.setToken(
+                Jwts.builder()
+                        .setSubject(user.getUsername())
+                        .setClaims(claim)
+                        .setIssuedAt(new Date())
+                        .setExpiration(new Date((new Date()).getTime() + refreshTokenDurationMs))
+                        .signWith(SignatureAlgorithm.HS512, jwtRefreshSecret)
+                        .compact()
+        );
 
         refreshToken = refreshTokenRepository.save(refreshToken);
         return refreshToken;
@@ -49,7 +73,7 @@ public class RefreshTokenService {
     }
 
     @Transactional
-    public int deleteByUserId(Long userId) {
+    public int deleteByUserId(String userId) {
         return refreshTokenRepository.deleteByUser(userRepository.findById(userId).get());
     }
 }

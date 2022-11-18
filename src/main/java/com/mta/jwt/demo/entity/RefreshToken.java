@@ -1,5 +1,6 @@
 package com.mta.jwt.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -16,6 +17,7 @@ public class RefreshToken {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;

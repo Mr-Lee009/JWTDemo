@@ -1,16 +1,10 @@
 package com.mta.jwt.demo.config;
 
-import net.sf.ehcache.Ehcache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
-import org.springframework.cache.ehcache.EhCacheFactoryBean;
-import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
-import org.springframework.cache.jcache.JCacheCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
 import org.springframework.security.acls.AclPermissionEvaluator;
@@ -53,7 +47,10 @@ public class AclMethodSecurityConfiguration extends GlobalMethodSecurityConfigur
     @Bean
     public static JdbcMutableAclService aclService(DataSource dataSource, CacheManager cacheManager) {
         return new JdbcMutableAclService(
-                dataSource, lookupStrategy(dataSource, cacheManager), defaultAclCache(cacheManager));
+                dataSource,
+                lookupStrategy(dataSource, cacheManager),
+                defaultAclCache(cacheManager)
+        );
     }
 
 
@@ -70,8 +67,7 @@ public class AclMethodSecurityConfiguration extends GlobalMethodSecurityConfigur
 
     @Bean(name = {"defaultAclCache", "aclCache"})
     public static AclCache defaultAclCache(org.springframework.cache.CacheManager springCacheManager) {
-        org.springframework.cache.Cache cache =
-                springCacheManager.getCache("aclCache");
+        org.springframework.cache.Cache cache = springCacheManager.getCache("aclCache");
         return new SpringCacheBasedAclCache(cache,
                 permissionGrantingStrategy(),
                 aclAuthorizationStrategy());

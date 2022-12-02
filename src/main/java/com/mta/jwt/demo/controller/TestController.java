@@ -1,6 +1,6 @@
 package com.mta.jwt.demo.controller;
 
-import com.mta.jwt.demo.client.PaymentClient;
+//import com.mta.jwt.demo.client.PaymentClient;
 import com.mta.jwt.demo.entity.RefreshToken;
 import com.mta.jwt.demo.entity.User;
 import com.mta.jwt.demo.repository.RefreshTokenRepository;
@@ -24,12 +24,12 @@ public class TestController {
     RefreshTokenRepository refreshTokenRepository;
 
     @Autowired
-    PaymentClient paymentClient;
+    //PaymentClient paymentClient;
 
     @GetMapping("/all")
     public String allAccess() {
-        String name = paymentClient.sayHello(TestController.class.getName());
-        System.out.printf("name" + name);
+        //String name = paymentClient.sayHello(TestController.class.getName());
+        //System.out.printf("name" + name);
         return "Public Content.";
     }
 

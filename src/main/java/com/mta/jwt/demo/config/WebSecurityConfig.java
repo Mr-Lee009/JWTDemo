@@ -68,14 +68,26 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/api/auth/**",
                         "/api/payment/**",
-                        "/web/home/**",
-                        "/swagger-ui.html#/**",
-                        "/api/test/**").permitAll();
+                        "/web/home/**"
+                ).permitAll();
+
+        // config for swagger
+        http.authorizeRequests()
+                .antMatchers("/v2/api-docs",
+                        "/configuration/ui", "/swagger-resources",
+                        "/configuration/security",
+                        "/swagger-ui.html", "/webjars/**",
+                        "/swagger-resources/configuration/ui", "/swagger-ui.html",
+                        "/swagger-resources/configuration/security")
+                .permitAll();// this
 
         http.authorizeRequests()
                     .anyRequest().authenticated()
-                    .and()
-                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
+
+                .and()
+                    .exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
+
+                // this disables session creation on Spring Security
                 .and()
                     .sessionManagement()
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -88,6 +100,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) {
         web.ignoring().antMatchers(
                 "/web/home/**",
+                "/swagger-ui.html",
+                "/swagger-ui/**",
                 "/swagger-resources/**",
                 "/v2/**"
         );

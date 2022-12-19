@@ -13,10 +13,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
@@ -55,12 +57,25 @@ public class JpaMultipleDBIntegrationTest {
 
     @Test
     public void createToken() {
+        SimpleDateFormat sim = new SimpleDateFormat("EEEEE, d MMM yyyy HH:mm:ss Z");
         Token token = new Token();
-        token.setAccessToken(UUID.randomUUID().toString());
+        token.setAccessToken(sim.format(new Date()));
         token.setRefeshToken(UUID.randomUUID().toString());
         tokenRepo.save(token);
-
         assertNotNull(tokenRepo.findAll());
-
     }
+
+//    @Autowired
+//    ApplicationContext applicationContextc;
+//
+//    @Test
+//    public void whenDecryptedPasswordNeeded_GetFromService() {
+//
+//
+//        System.setProperty("jasypt.encryptor.password", "password");
+//        PropertyServiceForJasyptSimple service = applicationContextc
+//                .getBean(PropertyServiceForJasyptSimple.class);
+//
+//        assertEquals("Password@2", service.getProperty());
+//    }
 }

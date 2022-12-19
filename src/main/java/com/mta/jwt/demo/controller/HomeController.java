@@ -1,4 +1,4 @@
-package controller;
+package com.mta.jwt.demo.controller;
 
 import com.mta.jwt.demo.payment.model.Card;
 import com.mta.jwt.demo.payment.repo.CardRepo;

@@ -37,3 +37,10 @@ CREATE TABLE IF NOT EXISTS acl_entry (
     CONSTRAINT fk_acl_entry_object FOREIGN KEY (acl_object_identity) REFERENCES acl_object_identity (id),
     CONSTRAINT fk_acl_entry_acl FOREIGN KEY (sid) REFERENCES acl_sid (id)
 ) ENGINE=InnoDB;
+
+
+select * from ALC_DB.acl_sid;
+insert into acl_sid(principal,sid) values (1,'hr');
+insert into acl_sid(principal,sid) values (0,'manger');
+insert into acl_sid(principal,sid) values (0,'ADMIN');
+

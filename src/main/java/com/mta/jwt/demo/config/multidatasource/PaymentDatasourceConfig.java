@@ -48,7 +48,7 @@ public class PaymentDatasourceConfig {
     public LocalContainerEntityManagerFactoryBean paymentEntityManagerFactoryBean(EntityManagerFactoryBuilder builder) {
         return builder
                 .dataSource(paymentDataSource())
-                .packages("com.mta.jwt.demo.payment.model")
+                .packages("com.mta.jwt.demo.payment.repo.model")
                 .build();
     }
 

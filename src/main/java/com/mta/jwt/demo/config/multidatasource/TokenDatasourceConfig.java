@@ -44,7 +44,7 @@ public class TokenDatasourceConfig {
     public LocalContainerEntityManagerFactoryBean tokenEntityManagerFactoryBean(EntityManagerFactoryBuilder builder) {
         return builder
                 .dataSource(tokenDataSource())
-                .packages("com.mta.jwt.demo.token.model")
+                .packages("com.mta.jwt.demo.token.repo.model")
                 .build();
     }
 

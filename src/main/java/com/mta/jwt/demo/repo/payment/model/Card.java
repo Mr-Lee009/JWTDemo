@@ -1,4 +1,4 @@
-package com.mta.jwt.demo.payment.model;
+package com.mta.jwt.demo.repo.payment.model;
 
 import lombok.Data;
 

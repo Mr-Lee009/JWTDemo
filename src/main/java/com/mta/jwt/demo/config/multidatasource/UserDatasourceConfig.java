@@ -44,7 +44,7 @@ public class UserDatasourceConfig {
     public LocalContainerEntityManagerFactoryBean userEntityManagerFactoryBean(EntityManagerFactoryBuilder builder) {
         return builder
                 .dataSource(userDataSource())
-                .packages("com.mta.jwt.demo.user.model")
+                .packages("com.mta.jwt.demo.user.repo.model")
                 .build();
     }
 

@@ -1,5 +1,4 @@
-package com.mta.jwt.demo.user.model;
-
+package com.mta.jwt.demo.repo.token.model;
 
 import lombok.Data;
 
@@ -8,10 +7,10 @@ import javax.persistence.*;
 @Table
 @Entity
 @Data
-public class User {
-    @javax.persistence.Id
+public class Token {
+    @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long Id;
-    private String username;
-    private String pass;
+    private String accessToken;
+    private String refeshToken;
 }

@@ -3,12 +3,12 @@ package com.mta.jwt.demo.main;
 //import com.mta.jwt.demo.config.topics.Topic;
 //import com.mta.jwt.demo.config.topics.TopicRepository;
 
-import com.mta.jwt.demo.payment.model.Card;
-import com.mta.jwt.demo.payment.repo.CardRepo;
-import com.mta.jwt.demo.token.model.Token;
-import com.mta.jwt.demo.token.repo.TokenRepo;
-import com.mta.jwt.demo.user.model.User;
-import com.mta.jwt.demo.user.repo.UserRepo;
+import com.mta.jwt.demo.repo.payment.model.Card;
+import com.mta.jwt.demo.repo.payment.repo.CardRepo;
+import com.mta.jwt.demo.repo.token.model.Token;
+import com.mta.jwt.demo.repo.token.repo.TokenRepo;
+import com.mta.jwt.demo.repo.user.model.User;
+import com.mta.jwt.demo.repo.user.repo.UserRepo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

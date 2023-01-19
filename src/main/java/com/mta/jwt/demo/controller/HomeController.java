@@ -1,7 +1,7 @@
 package com.mta.jwt.demo.controller;
 
-import com.mta.jwt.demo.payment.model.Card;
-import com.mta.jwt.demo.payment.repo.CardRepo;
+import com.mta.jwt.demo.repo.payment.model.Card;
+import com.mta.jwt.demo.repo.payment.repo.CardRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

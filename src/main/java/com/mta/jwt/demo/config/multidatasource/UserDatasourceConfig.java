@@ -19,7 +19,7 @@ import javax.sql.DataSource;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
-        basePackages = "com.mta.jwt.demo.user.repo",
+        basePackages = "com.mta.jwt.demo.repo.user.repo",
         entityManagerFactoryRef = "userEntityManagerFactory",
         transactionManagerRef = "userTransactionManager"
 )
@@ -44,7 +44,7 @@ public class UserDatasourceConfig {
     public LocalContainerEntityManagerFactoryBean userEntityManagerFactoryBean(EntityManagerFactoryBuilder builder) {
         return builder
                 .dataSource(userDataSource())
-                .packages("com.mta.jwt.demo.user.repo.model")
+                .packages("com.mta.jwt.demo.repo.user.model")
                 .build();
     }
 

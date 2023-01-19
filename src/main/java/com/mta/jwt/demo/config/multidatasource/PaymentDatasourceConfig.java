@@ -20,7 +20,7 @@ import javax.sql.DataSource;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
-        basePackages = "com.mta.jwt.demo.payment.repo",
+        basePackages = "com.mta.jwt.demo.repo.payment.repo",
         entityManagerFactoryRef = "paymentEntityManagerFactory",
         transactionManagerRef = "paymentTransactionManager"
 )
@@ -48,7 +48,7 @@ public class PaymentDatasourceConfig {
     public LocalContainerEntityManagerFactoryBean paymentEntityManagerFactoryBean(EntityManagerFactoryBuilder builder) {
         return builder
                 .dataSource(paymentDataSource())
-                .packages("com.mta.jwt.demo.payment.repo.model")
+                .packages("com.mta.jwt.demo.repo.payment.model")
                 .build();
     }
 

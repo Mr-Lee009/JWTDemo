@@ -19,7 +19,7 @@ import javax.sql.DataSource;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
-        basePackages = "com.mta.jwt.demo.token.repo",
+        basePackages = "com.mta.jwt.demo.repo.token.repo",
         entityManagerFactoryRef = "tokenEntityManagerFactory",
         transactionManagerRef = "tokenTransactionManager"
 )
@@ -44,7 +44,7 @@ public class TokenDatasourceConfig {
     public LocalContainerEntityManagerFactoryBean tokenEntityManagerFactoryBean(EntityManagerFactoryBuilder builder) {
         return builder
                 .dataSource(tokenDataSource())
-                .packages("com.mta.jwt.demo.token.repo.model")
+                .packages("com.mta.jwt.demo.repo.token.model")
                 .build();
     }
 

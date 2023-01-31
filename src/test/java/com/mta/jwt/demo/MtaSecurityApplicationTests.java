@@ -18,7 +18,8 @@ class MtaSecurityApplicationTests {
         System.out.println("___________________________");
         controller.DoSomething("TTB");
         System.out.println("___________________________");
-        //controller.DoSomething("CCCC");
+        controller.DoSomething("2B2C");
+
     }
 
 }

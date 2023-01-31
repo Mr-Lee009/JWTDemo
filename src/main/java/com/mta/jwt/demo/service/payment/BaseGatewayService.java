@@ -33,20 +33,20 @@ public abstract class BaseGatewayService {
         throw new IllegalArgumentException("Cannot handle type " + type);
     }
 
-    protected abstract void internalDoSomethingElse();
-
-    public final void doSomethingElse(String type)
-    {
-        if (CanApply(type))
-        {
-            internalDoSomethingElse();
-            return;
-        }
-        else if (next != null)
-        {
-            next.doSomethingElse(type);
-            return;
-        }
-        throw new IllegalArgumentException("Cannot handle type " + type);
-    }
+//    protected abstract void internalDoSomethingElse();
+//
+//    public final void doSomethingElse(String type)
+//    {
+//        if (CanApply(type))
+//        {
+//            internalDoSomethingElse();
+//            return;
+//        }
+//        else if (next != null)
+//        {
+//            next.doSomethingElse(type);
+//            return;
+//        }
+//        throw new IllegalArgumentException("Cannot handle type " + type);
+//    }
 }

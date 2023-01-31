@@ -24,8 +24,8 @@ public class Payment2B2CService extends BaseGatewayService {
         return null;
     }
 
-    @Override
-    protected void internalDoSomethingElse() {
-
-    }
+//    @Override
+//    protected void internalDoSomethingElse() {
+//
+//    }
 }

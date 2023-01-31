@@ -16,6 +16,6 @@ public class PaymentController {
     {
         service.generateMetadata(new PaymentDto(), type);
 
-        service.doSomethingElse(type);
+//        service.doSomethingElse(type);
     }
 }

@@ -23,8 +23,8 @@ public class PaymentTTBService extends BaseGatewayService{
         return null;
     }
 
-    @Override
-    protected void internalDoSomethingElse() {
-
-    }
+//    @Override
+//    protected void internalDoSomethingElse() {
+//
+//    }
 }

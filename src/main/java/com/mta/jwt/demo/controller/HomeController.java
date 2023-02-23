@@ -87,13 +87,9 @@ public class HomeController {
         return "userInfo";
     }
 
-    //ducla
+    //la 1
 
-    //ducla 2
+    //la 2
 
-    //ducla 3
 
-    //ducla 4
-
-    //ducla 5
 }

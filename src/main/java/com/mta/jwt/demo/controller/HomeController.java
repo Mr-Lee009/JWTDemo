@@ -88,4 +88,12 @@ public class HomeController {
     }
 
     //ducla
+
+    //ducla 2
+
+    //ducla 3
+
+    //ducla 4
+
+    //ducla 5
 }

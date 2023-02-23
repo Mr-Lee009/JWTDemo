@@ -1,14 +1,10 @@
 package com.mta.jwt.demo.controller;
 
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +13,6 @@ import com.mta.jwt.demo.utils.WebUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
-import java.util.List;
 
 @Controller
 public class HomeController {
@@ -56,10 +51,6 @@ public class HomeController {
 
     @RequestMapping(value = "/login",method = RequestMethod.GET)
     public String login(HttpServletRequest request) {
-//        BCryptPasswordEncoder encode = new BCryptPasswordEncoder();
-//        System.out.println(encode.encode("admin"));
-//        request.setAttribute("login","TRANG LOGIN");
-//        request.setAttribute("msg",environment.getProperty("msg.loginPage",null,null));
         return "login";
     }
 

@@ -1,5 +1,6 @@
 package com.mta.jwt.demo.security.jwt;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mta.jwt.demo.service.UserDetailsServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +41,10 @@ public class AuthTokenFilter extends OncePerRequestFilter {
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
+
+                ObjectMapper objm = new ObjectMapper();
+                System.out.println(objm.writeValueAsString(userDetails));
+
             }
         } catch (Exception e) {
             logger.error("Cannot set user authentication: {}", e);

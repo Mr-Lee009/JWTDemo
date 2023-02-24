@@ -1,0 +1,44 @@
+version: "3.3"
+
+networks:
+  jwt-network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: "192.171.0.0/24"
+
+services:
+  SQL_JWT:
+    image: mysql:8.0.28
+    container_name: SQL_JWT
+    restart: unless-stopped
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+      - MYSQL_ROOT_PASSWORD=group8vnhn
+      - MYSQL_DATABASE=EL4U_V2
+      - MYSQL_USER=ducla
+      - MYSQL_PASSWORD=ducla
+    ports:
+      - "3388:3306"
+    networks:
+      - jwt-network
+
+  SRPING_BOOT_JWT:
+    image: jwt-demo:latest
+    container_name: jwt-demo-spring
+    build:
+      dockerfile: Dockerfile
+    ports:
+      - "8090:8080"
+    environment:
+      SPRING_DATASOURCE_URL : jdbc:mysql://SQL_JWT:3306/EL4U_V2?allowPublicKeyRetrieval=true&useSSL=false
+      SPRING_DATASOURCE_USERNAME : ducla
+      SPRING_DATASOURCE_PASSWORD : ducla
+    volumes:
+      - ./:/app
+    networks:
+      - jwt-network
+    #cho phep mysql phai duoc chay truoc
+    depends_on:
+      - SQL_JWT

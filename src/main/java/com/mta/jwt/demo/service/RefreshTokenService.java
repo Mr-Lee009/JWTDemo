@@ -7,6 +7,7 @@ import com.mta.jwt.demo.repository.RefreshTokenRepository;
 import com.mta.jwt.demo.repository.UserRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -42,7 +43,7 @@ public class RefreshTokenService {
         User user = userRepository.findById(userId).get();
 
         refreshToken.setUser(user);
-        refreshToken.setExpiryDate(Instant.now().plusMillis(refreshTokenDurationMs));
+        refreshToken.setExpiryDate(new Date(System.currentTimeMillis() + refreshTokenDurationMs));
         //refreshToken.setToken(UUID.randomUUID().toString());
 
         Map<String,Object> claim = new HashMap<>();
@@ -65,7 +66,7 @@ public class RefreshTokenService {
     }
 
     public RefreshToken verifyExpiration(RefreshToken token) {
-        if (token.getExpiryDate().compareTo(Instant.now()) < 0) {
+        if (token.getExpiryDate().compareTo(new Date()) < 0) {
             refreshTokenRepository.delete(token);
             throw new TokenRefreshException(token.getToken(), "Refresh token was expired. Please make a new signin request");
         }

@@ -49,15 +49,15 @@ public class UserSpecification implements Specification<User> {
                 return builder.like(root.<String>get(_criteria.getKey()),
                         "%" + _criteria.getValue() + "%"
                 );
-            case IN:
-                return builder
-                        .in(root.get(_criteria.getKey()))
-                        .value(
-                                castToRequiredType(
-                                        root.get(_criteria.getKey()).getJavaType(),
-                                        _criteria.getValues()
-                                )
-                        );
+//            case IN:
+//                return builder
+//                        .in(root.get(_criteria.getKey()))
+//                        .value(
+//                                castToRequiredType(
+//                                        root.get(_criteria.getKey()).getJavaType(),
+//                                        _criteria.getValues()
+//                                )
+//                        );
             default:
                 return null;
         }
@@ -81,5 +81,7 @@ public class UserSpecification implements Specification<User> {
         }
         return lists;
     }
+
+
 
 }

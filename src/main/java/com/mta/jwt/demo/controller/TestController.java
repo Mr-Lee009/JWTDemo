@@ -1,6 +1,5 @@
 package com.mta.jwt.demo.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mta.jwt.demo.entity.RefreshToken;
 import com.mta.jwt.demo.entity.User;
@@ -8,13 +7,12 @@ import com.mta.jwt.demo.repository.RefreshTokenRepository;
 import com.mta.jwt.demo.repository.UserRepository;
 import com.mta.jwt.demo.repository.specifications.SearchCriteria;
 import com.mta.jwt.demo.repository.specifications.SearchOperation;
+import com.mta.jwt.demo.repository.specifications.SpecificationUtil;
 import com.mta.jwt.demo.repository.specifications.UserSpecification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,8 +22,7 @@ import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -106,18 +103,64 @@ public class TestController {
         }
 
         try {
-
+            if (properties.isEmpty() || null == properties) {
+                return userRepository.findAll(PageRequest.of(page, size, sortable));
+            }
             Specification<User> specification = (root, query, criteriaBuilder) -> {
-               List<Predicate> predicates = new ArrayList<>();
-               predicates.add(criteriaBuilder.())
+                List<Predicate> predicates = new ArrayList<>();
+                for (SearchCriteria sub : properties) {
+                    predicates.add(SpecificationUtil.createPredicate(sub, root, criteriaBuilder));
+                }
                 return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
             };
-            return userRepository.findAll(userSpecification, PageRequest.of(page, size, sortable));
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            return userRepository.findAll(specification, PageRequest.of(page, size, sortable));
+        } catch (Exception e) {
+            e.getStackTrace();
         }
+        return null;
     }
 
+
+    @PostMapping(value = "/token/search")
+    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+    public Object searchToken(
+            @RequestParam(name = "page", required = false, defaultValue = "1") Integer page,
+            @RequestParam(name = "size", required = false, defaultValue = "10") Integer size,
+            @RequestParam(name = "sortBy", required = false, defaultValue = "id") String sortBy,
+            @RequestParam(name = "sort", required = false, defaultValue = "ASC") String sort,
+            @RequestBody List<SearchCriteria> properties) {
+        ObjectMapper obj = new ObjectMapper();
+
+        Log.info("TestController::search-token");
+        String[] fields = new String[]{"token", "id", "expiryDate"};
+
+        if (!Arrays.asList(fields).contains(sortBy)) {
+            return "No property " + sortBy + " found for type!";
+        }
+        Sort sortable = null;
+        if ("ASC".equals(sort)) {
+            sortable = Sort.by(sortBy).ascending();
+        } else {
+            sortable = Sort.by(sortBy).descending();
+        }
+
+        try {
+            if (properties.isEmpty() || null == properties) {
+                return refreshTokenRepository.findAll(PageRequest.of(page, size, sortable));
+            }
+            Specification<RefreshToken> specification = (root, query, criteriaBuilder) -> {
+                List<Predicate> predicates = new ArrayList<>();
+                for (SearchCriteria sub : properties) {
+                    predicates.add(SpecificationUtil.createPredicate(sub, root, criteriaBuilder));
+                }
+                return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+            };
+            return refreshTokenRepository.findAll(specification, PageRequest.of(page, size, sortable));
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+        return null;
+    }
 
     @GetMapping("/token")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")

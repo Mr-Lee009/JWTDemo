@@ -11,8 +11,191 @@
 				{
 					"name": "signin Token Copy",
 					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBMSIsImlhdCI6MTY3NzQ4NzIxMywiZXhwIjoxNjc3NDkwMjEzfQ.R4heS9FFx_DVpVZMh8Y0mPZMYsaznQgur7eMvnhJOZy0s86YTHFdmeg7KUsWXkJNExErfiCRu7K_OvK4mN0sHA",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:{{port}}/api/test/user?page=0&size=10&sortBy=username&sort=ASC&username=duc&email=7@gmail.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"test",
+								"user"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
+									"key": "sortBy",
+									"value": "username"
+								},
+								{
+									"key": "sort",
+									"value": "ASC"
+								},
+								{
+									"key": "username",
+									"value": "duc"
+								},
+								{
+									"key": "email",
+									"value": "7@gmail.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "search advide",
+					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBMSIsImlhdCI6MTY3NzU1NDEyNSwiZXhwIjoxNjc3NTU3MTI1fQ.exQkGfoOeHrTUdCLNpAbJBkyatg-UtZZfqUUMCbRH3exYUUlD878n-7khEtjrcOi51ZI73PSo556Gx04hjwZfw",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    \r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{port}}/api/test/user/search?page=0&size=15&sortBy=username&sort=ASC",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"test",
+								"user",
+								"search"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "15"
+								},
+								{
+									"key": "sortBy",
+									"value": "username"
+								},
+								{
+									"key": "sort",
+									"value": "ASC"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "search token advide",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBMSIsImlhdCI6MTY3NzU1NDEyNSwiZXhwIjoxNjc3NTU3MTI1fQ.exQkGfoOeHrTUdCLNpAbJBkyatg-UtZZfqUUMCbRH3exYUUlD878n-7khEtjrcOi51ZI73PSo556Gx04hjwZfw",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    {\r\n        \"key\":\"token\",\r\n        \"value\":\"YjIiLCJhMyI6ImIzIiwiZXhwIjoxNjc3MjM1MD\",\r\n        \"operation\":\"CONTAINS\"\r\n    },\r\n    {\r\n        \"key\":\"token\",\r\n        \"value\":\"YjIiLCJhMyI6ImIzIiwiZXhwIjoxNjc3MjM1MD\",\r\n        \"operation\":\"CONTAINS\"\r\n    }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{port}}/api/test/token/search?page=0&size=5&sortBy=token&sort=ASC",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"test",
+								"token",
+								"search"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "5"
+								},
+								{
+									"key": "sortBy",
+									"value": "token"
+								},
+								{
+									"key": "sort",
+									"value": "ASC"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "document index",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjYW9jYW8yNCIsImlhdCI6MTY3NzQ2ODMyMywiZXhwIjoxNjc3NDcxMzIzfQ.B1xYN6cAHg4TaOPhrgDqO6Chl2nU_JNT_YXQ-lXFOpgFO9GOHx3rZg-en04CJv4bkqcfycUvnXeUDtIRjH8NUA",
+								"type": "default"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n    \"username\": \"caocao\",\r\n    \"password\": \"hihi\"\r\n}",
@@ -23,16 +206,15 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost::{{port}}/api/test/token",
+							"raw": "http://localhost:8090/document/index",
 							"protocol": "http",
 							"host": [
-								"localhost:"
+								"localhost"
 							],
-							"port": "{{port}}",
+							"port": "8090",
 							"path": [
-								"api",
-								"test",
-								"token"
+								"document",
+								"index"
 							]
 						}
 					},
@@ -44,10 +226,17 @@
 			"name": "signin Token",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjYW9jYW8yNCIsImlhdCI6MTY3NzQ3MjgwNCwiZXhwIjoxNjc3NDc1ODA0fQ.c3sDMdxGRye9pkEu1I0CfxnS1FiLJZGzUE_PnCBl7QCNr4c2CKHZPbEQYhclLe94MZ9BRAi4XfqWMPf1jfAn9Q",
+						"type": "default",
+						"disabled": true
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"caocao\",\r\n    \"password\": \"hihi\"\r\n}",
+					"raw": "{\r\n    \"username\": \"A1\",\r\n    \"password\": \"hihi\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -55,12 +244,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8090/api/auth/signin",
+					"raw": "http://localhost:{{port}}/api/auth/signin",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8090",
+					"port": "{{port}}",
 					"path": [
 						"api",
 						"auth",
@@ -72,21 +261,18 @@
 		},
 		{
 			"name": "refreshtoken",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
-				"method": "GET",
+				"method": "POST",
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJhIjoiYiIsImEyIjoiYjIiLCJhMyI6ImIzIiwiZXhwIjoxNjc3MjI5MTUwLCJpYXQiOjE2NzcyMjkwMzB9.TZodbzhbyZGa_1TG0TPZO_UcFalarngFV8TM8PWdiJ4bxWY3l3gv47N-iosn3G2XnRLI9yfXSBY7xaA1UvlVRQ",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjYW9jYW8yNCIsImlhdCI6MTY3NzIzMTkyMiwiZXhwIjoxNjc3MjM0OTIyfQ.KVDC9sdpKqb-XcuTeJAbbt83bfQ-NIipEue8Tcfe3hOXdvwcFuv5R2hTtctFCAO70C193uliQlKhbjcmh982wg",
 						"type": "default"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "",
+					"raw": "{\r\n    \"refreshToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJhIjoiYiIsImEyIjoiYjIiLCJhMyI6ImIzIiwiZXhwIjoxNjc3NTU1OTg3LCJpYXQiOjE2Nzc1NTU4Njd9._t35E9LcK370VjPhaiiQ0GoywwDfnh8RsxzUgthy_AuqULzYy5KTCzHeZ5uq-6q2PUYmFwpO8qBblDG-C0-GwA\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -94,14 +280,16 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:{{port}}/home",
+					"raw": "http://localhost:{{port}}/api/auth/refreshtoken",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "{{port}}",
 					"path": [
-						"home"
+						"api",
+						"auth",
+						"refreshtoken"
 					]
 				}
 			},
@@ -114,7 +302,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"caocao23\",\r\n    \"email\": \"caocao23@gmail.com\",\r\n    \"password\": \"hihi\",\r\n    \"rule\":[\"admin\",\"mod\"]\r\n}",
+					"raw": "{\r\n    \"username\": \"duc001\",\r\n    \"email\": \"duc00177@gmail.com\",\r\n    \"password\": \"hihi\",\r\n    \"role\": [\r\n        \"admin\"\r\n    ]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -122,12 +310,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:{{port}}/api/auth/signup",
+					"raw": "http://localhost:8090/api/auth/signup",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "{{port}}",
+					"port": "8090",
 					"path": [
 						"api",
 						"auth",

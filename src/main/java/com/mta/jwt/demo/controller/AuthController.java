@@ -11,7 +11,6 @@ import com.mta.jwt.demo.payload.request.TokenRefreshRequest;
 import com.mta.jwt.demo.payload.response.JwtResponse;
 import com.mta.jwt.demo.payload.response.MessageResponse;
 import com.mta.jwt.demo.payload.response.TokenRefreshResponse;
-import com.mta.jwt.demo.repository.RefreshTokenRepository;
 import com.mta.jwt.demo.repository.RoleRepository;
 import com.mta.jwt.demo.repository.UserRepository;
 import com.mta.jwt.demo.security.jwt.JwtUtils;

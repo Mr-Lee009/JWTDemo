@@ -19,18 +19,18 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
-//    @Id
+    //    @Id
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
 //    private Long id;
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
-
     private String username;
     private String email;
     private String password;
-
+    private String currentAddress;
+    private boolean isEnabled;
     @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
@@ -38,9 +38,9 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     Set<Role> roles = new HashSet<>();
 
-    public User(String username, String email, String encode) {
+    public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
-        this.password = encode;
+        this.password = password;
     }
 }

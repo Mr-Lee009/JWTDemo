@@ -5,52 +5,46 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class SpecificationUtil {
+
+    public static void main(String[] args) {
+        Date a = SearchCriteria.<Date>convertInstanceOfObject("Wed Mar 01 11:34:22 ICT 2023");
+        System.out.println(a);
+    }
     public static <T> Predicate createPredicate(SearchCriteria _criteria, Root<T> root, CriteriaBuilder builder) {
+
+        Object value = _criteria.getValue();
+
         switch (_criteria.getOperation()) {
             case EQUALITY:
-                return builder.equal(
-                        root.get(_criteria.getKey()),
-                        castToRequiredType(root.get(_criteria.getKey()).getJavaType(), _criteria.getValue().toString())
-                );
+                return builder.equal(root.get(_criteria.getKey()), value);
             case NEGATION:
-                return builder.notEqual(
-                        root.get(_criteria.getKey()),
-                        castToRequiredType(root.get(_criteria.getKey()).getJavaType(), _criteria.getValue().toString())
-                );
-            case GREATER_THAN:
-                return builder.greaterThan(
-                        root.get(_criteria.getKey()),
-                        (String) castToRequiredType(root.get(_criteria.getKey()).getJavaType(), _criteria.getValue().toString())
-                );
-            case LESS_THAN:
-                return builder.lessThan(
-                        root.get(_criteria.getKey()),
-                        (String) castToRequiredType(root.get(_criteria.getKey()).getJavaType(), _criteria.getValue().toString())
-                );
-            case LIKE:
-                return builder.like(root.<String>get(_criteria.getKey()),
-                        _criteria.getValue().toString()
-                );
-            case STARTS_WITH:
-                return builder.like(root.<String>get(_criteria.getKey()),
-                        _criteria.getValue() + "%"
-                );
-            case ENDS_WITH:
-                return builder.like(root.<String>get(_criteria.getKey()),
-                        "%" + _criteria.getValue()
-                );
-            case CONTAINS:
-                return builder.like(root.<String>get(_criteria.getKey()),
-                        "%" + _criteria.getValue() + "%"
-                );
+                return builder.notEqual(root.get(_criteria.getKey()), value);
+//            case GREATER_THAN:
+//                return builder.greaterThan(root.<String>get(_criteria.getKey()),(String)value);
+//            case LESS_THAN:
+//                return builder.lessThan(
+//                        root.get(_criteria.getKey()),
+//                        (String) castToRequiredType(root.get(_criteria.getKey()).getJavaType(), _criteria.getValue().toString())
+//                );
+//            case LIKE:
+//                return builder.like(root.<String>get(_criteria.getKey()),
+//                        _criteria.getValue().toString()
+//                );
+//            case STARTS_WITH:
+//                return builder.like(root.<String>get(_criteria.getKey()),
+//                        _criteria.getValue() + "%"
+//                );
+//            case ENDS_WITH:
+//                return builder.like(root.<String>get(_criteria.getKey()),
+//                        "%" + _criteria.getValue()
+//                );
+//            case CONTAINS:
+//                return builder.like(root.<String>get(_criteria.getKey()),
+//                        "%" + _criteria.getValue() + "%"
+//                );
             case IN:
                 if (null == _criteria.getValues() || _criteria.getValues().size() < 1)
                     return null;
@@ -63,7 +57,7 @@ public class SpecificationUtil {
                         ),
                         builder.lessThan(
                                 root.get(_criteria.getKey()),
-                                (String) castToRequiredType(root.get(_criteria.getKey()).getJavaType(),values.get(1))
+                                (String) castToRequiredType(root.get(_criteria.getKey()).getJavaType(), values.get(1))
                         )
                 );
             default:

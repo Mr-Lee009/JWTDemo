@@ -17,13 +17,14 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(
-        // securedEnabled = true,
-        // jsr250Enabled = true,
-        prePostEnabled = true)
+//@EnableGlobalMethodSecurity(
+//        // securedEnabled = true,
+//        // jsr250Enabled = true,
+//        prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     UserDetailsServiceImpl userDetailsService;
@@ -53,22 +54,40 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable()
-                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeRequests()
-                .antMatchers("/api/auth/**").permitAll()
-                .antMatchers("/api/test/**").permitAll()
-                .anyRequest().authenticated();
+        http.cors().and().csrf().disable();
+
+        // don't authenticate this particular request
+        http.authorizeRequests().antMatchers(
+                "/", "/api/auth"
+        ).permitAll();
+
+        //skip for swagger ui
+        http.authorizeRequests().antMatchers(
+                "/swagger-ui/**",
+                "/api/**",
+                "/swagger",
+                "/swagger/**",
+                "/swagger-resources/**",
+                "/v2/**",
+                "/v3/**"
+        ).permitAll();
+
+
+        // all other requests need to be authenticated
+        http.authorizeRequests().anyRequest().authenticated()
+                .and()
+                // make sure we use stateless session; session won't be used to
+                // store user's state.
+                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
+                .and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
-//    @Override
-//    public void configure(WebSecurity web) throws Exception {
-//        web.ignoring().antMatchers("/api/auth/**");
-//    }
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+    }
 }

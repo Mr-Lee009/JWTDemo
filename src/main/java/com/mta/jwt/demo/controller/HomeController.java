@@ -16,12 +16,6 @@ import java.security.Principal;
 
 @Controller
 public class HomeController {
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String index() {
-        return "index";
-    }
-
     @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public String indexAdmin(HttpServletRequest request, Model model, Principal principal) {

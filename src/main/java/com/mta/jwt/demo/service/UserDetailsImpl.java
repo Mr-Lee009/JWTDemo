@@ -13,25 +13,22 @@ import java.util.stream.Collectors;
 public class UserDetailsImpl implements UserDetails {
 
     private static final long serialVersionUID = 1L;
-
     private String id;
-
     private String username;
-
     private String email;
-
     @JsonIgnore
     private String password;
-
+    private boolean isEnabled;
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserDetailsImpl(String id, String username, String email, String password,
+    public UserDetailsImpl(String id, String username, String email, String password, Boolean isEnabled,
                            Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
         this.authorities = authorities;
+        this.isEnabled = isEnabled;
     }
 
     public static UserDetailsImpl build(User user) {
@@ -44,6 +41,7 @@ public class UserDetailsImpl implements UserDetails {
                 user.getUsername(),
                 user.getEmail(),
                 user.getPassword(),
+                user.isEnabled(),
                 authorities);
     }
 
@@ -80,7 +78,7 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return this.isEnabled;
     }
 
     public String getId() {

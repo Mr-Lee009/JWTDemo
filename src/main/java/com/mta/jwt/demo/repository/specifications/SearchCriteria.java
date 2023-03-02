@@ -7,9 +7,8 @@ import java.util.List;
 public class SearchCriteria {
     private String key;
     private SearchOperation operation;
-
     private String valueType;
-    private Object value;
+    private String value;
     private List<String> values;
 
 
@@ -53,13 +52,13 @@ public class SearchCriteria {
         this.valueType = valueType;
     }
 
-    public SearchCriteria(String key, SearchOperation operation, Object value) {
+    public SearchCriteria(String key, SearchOperation operation, String value) {
         this.key = key;
         this.operation = operation;
         this.value = value;
     }
 
-    public SearchCriteria(String key, SearchOperation operation, String valueType, Object value) {
+    public SearchCriteria(String key, SearchOperation operation, String valueType, String value) {
         this.key = key;
         this.operation = operation;
         this.valueType = valueType;
@@ -82,11 +81,37 @@ public class SearchCriteria {
         this.operation = operation;
     }
 
-    public Object getValue() {
+    public String getValue() {
         return value;
     }
 
-    public void setValue(Object value) {
+    public static <T extends Object> T getValue(String value, Class<T> clazz) {
+        return convertInstanceOfObject(value, clazz);
+    }
+
+    private static <T extends Object> T convertInstanceOfObject(Object o, Class<T> clazz) {
+        return null;
+    }
+
+    public static <T extends Object> T convertInstanceOfObject(Object o) {
+        String regexDate = "^(?:(?:31(\\/|-|\\.)(?:0?[13578]|1[02]|(?:Jan|Mar|May|Jul|Aug|Oct|Dec)))\\1|(?:(?:29|30)(\\/|-|\\.)(?:0?[1,3-9]|1[0-2]|(?:Jan|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec))\\2))(?:(?:1[6-9]|[2-9]\\d)?\\d{2})$|^(?:29(\\/|-|\\.)(?:0?2|(?:Feb))\\3(?:(?:(?:1[6-9]|[2-9]\\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\\d|2[0-8])(\\/|-|\\.)(?:(?:0?[1-9]|(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep))|(?:1[0-2]|(?:Oct|Nov|Dec)))\\4(?:(?:1[6-9]|[2-9]\\d)?\\d{2})$";
+
+        try {
+            if(o instanceof String ){
+                String value = (String) o;
+                if(value.matches(regexDate)){
+
+                }
+                return (T) new Date();
+            }
+            return (T) o;
+        } catch (ClassCastException e) {
+            return null;
+        }
+    }
+
+
+    public void setValue(String value) {
         this.value = value;
     }
 

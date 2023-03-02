@@ -50,9 +50,7 @@ public class TestController {
                              @RequestParam(name = "username", required = false, defaultValue = "ASC") String username,
                              @RequestParam(name = "email", required = false, defaultValue = "@gmail.com") String email) {
         Log.info("TestController::userAccess");
-
         String[] fileds = new String[]{"uuid", "password", "email", "username"};
-
         if (!Arrays.asList(fileds).contains(sortBy)) {
             return "No property " + sortBy + " found for type!";
         }
@@ -64,9 +62,7 @@ public class TestController {
         }
 
         UserSpecification specification_username = new UserSpecification(new SearchCriteria("username", SearchOperation.CONTAINS, username));
-
         UserSpecification specification_email = new UserSpecification(new SearchCriteria("email", SearchOperation.CONTAINS, email));
-
         return userRepository.findAll(specification_email.and(specification_username), PageRequest.of(page, size, sortable));
     }
 
@@ -86,8 +82,7 @@ public class TestController {
             @RequestParam(name = "size", required = false, defaultValue = "10") Integer size,
             @RequestParam(name = "sortBy", required = false, defaultValue = "username") String sortBy,
             @RequestParam(name = "sort", required = false, defaultValue = "ASC") String sort,
-            @RequestBody List<SearchCriteria> properties) {
-        ObjectMapper obj = new ObjectMapper();
+            @RequestBody List<SearchCriteria> fiters) {
 
         Log.info("TestController::search");
         String[] fields = new String[]{"uuid", "password", "email", "username"};
@@ -103,12 +98,12 @@ public class TestController {
         }
 
         try {
-            if (properties.isEmpty() || null == properties) {
+            if (fiters.isEmpty() || null == fiters) {
                 return userRepository.findAll(PageRequest.of(page, size, sortable));
             }
             Specification<User> specification = (root, query, criteriaBuilder) -> {
                 List<Predicate> predicates = new ArrayList<>();
-                for (SearchCriteria sub : properties) {
+                for (SearchCriteria sub : fiters) {
                     predicates.add(SpecificationUtil.createPredicate(sub, root, criteriaBuilder));
                 }
                 return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
@@ -128,7 +123,7 @@ public class TestController {
             @RequestParam(name = "size", required = false, defaultValue = "10") Integer size,
             @RequestParam(name = "sortBy", required = false, defaultValue = "id") String sortBy,
             @RequestParam(name = "sort", required = false, defaultValue = "ASC") String sort,
-            @RequestBody List<SearchCriteria> properties) {
+            @RequestBody List<SearchCriteria> filters) {
         ObjectMapper obj = new ObjectMapper();
 
         Log.info("TestController::search-token");
@@ -145,17 +140,20 @@ public class TestController {
         }
 
         try {
-            if (properties.isEmpty() || null == properties) {
-                return refreshTokenRepository.findAll(PageRequest.of(page, size, sortable));
+            PageRequest request =  PageRequest.of(page, size, sortable);
+
+            if (filters.isEmpty() || null == filters) {
+                return refreshTokenRepository.findAll(request);
             }
+
             Specification<RefreshToken> specification = (root, query, criteriaBuilder) -> {
                 List<Predicate> predicates = new ArrayList<>();
-                for (SearchCriteria sub : properties) {
-                    predicates.add(SpecificationUtil.createPredicate(sub, root, criteriaBuilder));
+                for (SearchCriteria subFilter : filters) {
+                    predicates.add(SpecificationUtil.createPredicate(subFilter, root, criteriaBuilder));
                 }
                 return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
             };
-            return refreshTokenRepository.findAll(specification, PageRequest.of(page, size, sortable));
+            return refreshTokenRepository.findAll(specification, request);
         } catch (Exception e) {
             e.getStackTrace();
         }

@@ -103,16 +103,35 @@
         <!--            <artifactId>spring-messaging</artifactId>-->
         <!--            <version>4.0.0.RELEASE</version>-->
         <!--        </dependency>-->
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.junit.vintage</groupId>
+                    <artifactId>junit-vintage-engine</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
     </dependencies>
 
     <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>2.3.0.RELEASE</version>
-            </plugin>
-        </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>2.3.0.RELEASE</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.sonarsource.scanner.maven</groupId>
+                    <artifactId>sonar-maven-plugin</artifactId>
+                    <version>3.7.0.1746</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
     <repositories>
         <repository>
@@ -134,7 +153,6 @@
             </snapshots>
         </pluginRepository>
     </pluginRepositories>
-
     <profiles>
         <profile>
             <id>native</id>
@@ -142,7 +160,6 @@
                 <repackage.classifier>exec</repackage.classifier>
                 <native-buildtools.version>0.9.0</native-buildtools.version>
             </properties>
-
             <build>
                 <defaultGoal>install</defaultGoal>
                 <finalName>jwt project</finalName>
@@ -162,6 +179,18 @@
                 </plugins>
             </build>
         </profile>
+<!--        <profile>-->
+<!--            <id>sonar</id>-->
+<!--            <activation>-->
+<!--                <activeByDefault>true</activeByDefault>-->
+<!--            </activation>-->
+<!--            <properties>-->
+<!--                &lt;!&ndash; Optional URL to server. Default value is http://localhost:9000 &ndash;&gt;-->
+<!--                <sonar.host.url>-->
+<!--                    http://localhost:9000-->
+<!--                </sonar.host.url>-->
+<!--            </properties>-->
+<!--        </profile>-->
     </profiles>
 
 </project>

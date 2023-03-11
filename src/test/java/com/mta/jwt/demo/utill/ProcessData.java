@@ -1,20 +1,14 @@
 package com.mta.jwt.demo.utill;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mta.jwt.demo.MtaSecurityApplicationTests;
 import com.mta.jwt.demo.entity.User;
-import com.mta.jwt.demo.service.UserDetailsService;
 import javassist.NotFoundException;
-import sun.net.www.content.audio.x_aiff;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class ProcessData {
     public static void main(String[] args) {
@@ -61,8 +55,8 @@ public class ProcessData {
             }
 
             Map<String, Object> mapDataTest = (Map<String, Object>) map.get(key);
-            //Todo: 6 fetch data from json
 
+            //Todo: 6 fetch data from json
             Parameter[] parameters = method.getParameters();
 
             List<Object> fieldValues = new ArrayList();

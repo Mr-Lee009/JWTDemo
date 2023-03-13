@@ -3,26 +3,22 @@ package com.mta.jwt.demo.config;
 import com.mta.jwt.demo.filter.APIKeyAuthFilter;
 import com.mta.jwt.demo.security.jwt.AuthEntryPointJwt;
 import com.mta.jwt.demo.security.jwt.AuthTokenFilter;
+import com.mta.jwt.demo.security.jwt.CustomAuthenticationProvider;
 import com.mta.jwt.demo.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
 
 @Configuration
 @EnableWebSecurity
@@ -33,10 +29,10 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationEn
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     UserDetailsServiceImpl userDetailsService;
-
     @Autowired
     private AuthEntryPointJwt unauthorizedHandler;
-
+    @Autowired
+    CustomAuthenticationProvider customAuthenticationProvider;
     @Override
     public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
         authenticationManagerBuilder.userDetailsService(userDetailsService::loadUserByUsername)
@@ -86,11 +82,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         // don't authenticate this particular request
         http.authorizeRequests().antMatchers(
-                "/", "/api/auth"
+                "/", "/auth"
         ).permitAll();
 
         //skip for swagger ui
         http.authorizeRequests().antMatchers(
+                "/auth/**",
                 "/swagger-ui/**",
                 "/api/**",
                 "/swagger",

@@ -7,11 +7,11 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class UserDetailsImpl implements UserDetails {
-
     private static final long serialVersionUID = 1L;
     private String id;
     private String username;
@@ -19,9 +19,15 @@ public class UserDetailsImpl implements UserDetails {
     @JsonIgnore
     private String password;
     private boolean isEnabled;
+    private Integer failedAttempt;
+    private Boolean accountNonLocked;
+    private Date lockTime;
     private Collection<? extends GrantedAuthority> authorities;
 
+    private User user;
+
     public UserDetailsImpl(String id, String username, String email, String password, Boolean isEnabled,
+                           Integer failedAttempt, Boolean accountNonLocked, Date lockTime,
                            Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
@@ -29,12 +35,14 @@ public class UserDetailsImpl implements UserDetails {
         this.password = password;
         this.authorities = authorities;
         this.isEnabled = isEnabled;
+        this.failedAttempt = failedAttempt;
+        this.accountNonLocked = accountNonLocked;
+        this.lockTime = lockTime;
     }
 
     public static UserDetailsImpl build(User user) {
         List<GrantedAuthority> authorities = user.getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName().name())
-                )
+                .map(role -> new SimpleGrantedAuthority(role.getName().name()))
                 .collect(Collectors.toList());
 
         return new UserDetailsImpl(user.getId(),
@@ -42,6 +50,9 @@ public class UserDetailsImpl implements UserDetails {
                 user.getEmail(),
                 user.getPassword(),
                 user.isEnabled(),
+                user.getFailedAttempt(),
+                user.getAccountNonLocked(),
+                user.getLockTime(),
                 authorities);
     }
 
@@ -68,7 +79,7 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return this.accountNonLocked;
     }
 
     @Override
@@ -107,5 +118,29 @@ public class UserDetailsImpl implements UserDetails {
 
     public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
         this.authorities = authorities;
+    }
+
+    public Integer getFailedAttempt() {
+        return failedAttempt;
+    }
+
+    public void setFailedAttempt(Integer failedAttempt) {
+        this.failedAttempt = failedAttempt;
+    }
+
+    public Boolean getAccountNonLocked() {
+        return accountNonLocked;
+    }
+
+    public void setAccountNonLocked(Boolean accountNonLocked) {
+        this.accountNonLocked = accountNonLocked;
+    }
+
+    public Date getLockTime() {
+        return lockTime;
+    }
+
+    public void setLockTime(Date lockTime) {
+        this.lockTime = lockTime;
     }
 }

@@ -12,16 +12,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@Component
+//@Component
 public class ApiKeyRequestFilter extends GenericFilter {
 
     private static final Logger LOG = LoggerFactory.getLogger(ApiKeyRequestFilter.class);
+
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
         String path = req.getRequestURI();
 
-        if(path.startsWith("/api") == false){
+        if (path.startsWith("/api") == false) {
             chain.doFilter(request, response);
             return;
         }
@@ -29,20 +30,21 @@ public class ApiKeyRequestFilter extends GenericFilter {
         String key = req.getHeader("api-key") == null ? "" : req.getHeader("api-key");
         LOG.info("Trying key: " + key);
         List<String> apiKeys = Arrays.asList(
-                "ducla",
-                "anhduc2781997",
-                "2781997",
-                "xin chao anh em"
+                "lpbVjGIkL9uhR8Ln84wJ",
+                "BHzNvcd25ClmMwqGZBJu",
+                "tC11iRaXoXTzLvrTOm7A",
+                "PPwktRjS73dD7pQJgysR",
+                "v7rkvhKbev09J4WDSI2t",
+                "2z0wuzlL9TlPgHhojv8z"
         );
-        if(apiKeys.contains(key)){
+        if (apiKeys.contains(key)) {
             chain.doFilter(request, response);
-        }
-        else {
+        } else {
             HttpServletResponse resp = (HttpServletResponse) response;
             String error = "Invalid API KEY";
             resp.reset();
             resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.setContentLength(error .length());
+            response.setContentLength(error.length());
             response.getWriter().write(error);
         }
     }

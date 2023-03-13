@@ -1,12 +1,14 @@
 package com.mta.jwt.demo.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sun.istack.internal.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -31,6 +33,13 @@ public class User {
     private String password;
     private String currentAddress;
     private boolean isEnabled;
+    @Column(name = "failed_attempt", columnDefinition = "int(10) default 0 ")
+    private Integer failedAttempt;
+    @Column(name = "account_non_locked")
+    private Boolean accountNonLocked;
+    @Column(name = "lock_time")
+    @Nullable
+    private Date lockTime;
     @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",

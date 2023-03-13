@@ -8,20 +8,25 @@ import com.mta.jwt.demo.exception.TokenRefreshException;
 import com.mta.jwt.demo.payload.request.LoginRequest;
 import com.mta.jwt.demo.payload.request.SignupRequest;
 import com.mta.jwt.demo.payload.request.TokenRefreshRequest;
+import com.mta.jwt.demo.payload.response.ErrorMessage;
 import com.mta.jwt.demo.payload.response.JwtResponse;
 import com.mta.jwt.demo.payload.response.MessageResponse;
 import com.mta.jwt.demo.payload.response.TokenRefreshResponse;
 import com.mta.jwt.demo.repository.RoleRepository;
 import com.mta.jwt.demo.repository.UserRepository;
+import com.mta.jwt.demo.security.jwt.CustomAuthenticationProvider;
 import com.mta.jwt.demo.security.jwt.JwtUtils;
 import com.mta.jwt.demo.service.RefreshTokenService;
 import com.mta.jwt.demo.service.UserDetailsImpl;
+import com.mta.jwt.demo.service.UserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,7 +39,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping(value = "/api/auth")
+@RequestMapping(value = "/auth")
 public class AuthController {
     @Autowired
     AuthenticationManager authenticationManager;
@@ -54,7 +59,12 @@ public class AuthController {
     @Autowired
     RefreshTokenService refreshTokenService;
 
-    @PostMapping("/signin")
+    @Autowired
+    UserDetailsService userDetailsService;
+
+    @Autowired
+    CustomAuthenticationProvider customAuthenticationProvider;
+    /*@PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
@@ -78,6 +88,62 @@ public class AuthController {
                 userDetails.getUsername(),
                 userDetails.getEmail(),
                 roles));
+    }*/
+
+
+    /**
+     * {@code ham dang nhap nang cao hon kem tra TK co bi khoa hay ko}
+     * @param loginRequest object to login
+     */
+    @PostMapping("/signin")
+    public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
+
+        //Todo 1: validate user
+        User user = userRepository.findByUsername(loginRequest.getUsername()).get();
+        BCryptPasswordEncoder encrypt = new BCryptPasswordEncoder();
+        if (user == null) {
+            throw new LockedException("not found user!");
+        }
+
+        if (!encrypt.matches(loginRequest.getPassword(), user.getPassword()) && user.isEnabled() && user.getAccountNonLocked()) {
+            if (user.getFailedAttempt() < userDetailsService.MAX_FAILED_ATTEMPTS - 1) {
+                userDetailsService.increaseFailedAttempts(user);
+            } else {
+                userDetailsService.lock(user);
+                return ResponseEntity.ok(ErrorMessage.lockMessage());
+            }
+        } else if (!user.getAccountNonLocked()) {
+            if (userDetailsService.unlockWhenTimeExpired(user)) {
+                return ResponseEntity.ok(ErrorMessage.unLockMessage());
+            }
+            return ResponseEntity.ok(ErrorMessage.lockMessage());
+        }
+
+
+        //Todo 2: authentication user
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        String jwt = jwtUtils.generateJwtToken(userDetails);
+
+        List<String> roles = userDetails.getAuthorities().stream()
+                .map(item -> item.getAuthority())
+                .collect(Collectors.toList());
+
+        //Todo 3: create token
+        RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getId());
+
+        return ResponseEntity.ok(
+                new JwtResponse(
+                        userDetails.getId(),
+                        jwt,
+                        refreshToken.getToken(),
+                        userDetails.getUsername(),
+                        userDetails.getEmail(),
+                        roles)
+        );
     }
 
     @PostMapping("/refreshtoken")
@@ -147,6 +213,8 @@ public class AuthController {
 
         user.setRoles(roles);
         user.setEnabled(true);
+        user.setAccountNonLocked(true);
+        user.setFailedAttempt(0);
         userRepository.save(user);
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));

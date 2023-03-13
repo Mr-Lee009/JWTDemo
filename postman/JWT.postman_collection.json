@@ -123,13 +123,13 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBMSIsImlhdCI6MTY3NzU1NDEyNSwiZXhwIjoxNjc3NTU3MTI1fQ.exQkGfoOeHrTUdCLNpAbJBkyatg-UtZZfqUUMCbRH3exYUUlD878n-7khEtjrcOi51ZI73PSo556Gx04hjwZfw",
+								"value": "Bearer {{token}}",
 								"type": "default"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "[\r\n    {\r\n        \"key\":\"token\",\r\n        \"value\":\"YjIiLCJhMyI6ImIzIiwiZXhwIjoxNjc3MjM1MD\",\r\n        \"operation\":\"CONTAINS\"\r\n    },\r\n    {\r\n        \"key\":\"token\",\r\n        \"value\":\"YjIiLCJhMyI6ImIzIiwiZXhwIjoxNjc3MjM1MD\",\r\n        \"operation\":\"CONTAINS\"\r\n    }\r\n]",
+							"raw": "[\r\n    {\r\n        \"key\": \"id\",\r\n        \"value\": 200,\r\n        \"operation\": \"LESS_THAN\"\r\n    }\r\n]",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -137,7 +137,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:{{port}}/api/test/token/search?page=0&size=5&sortBy=token&sort=ASC",
+							"raw": "http://localhost:{{port}}/api/test/token/search?page=0&size=35&sortBy=token&sort=ASC",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -156,7 +156,7 @@
 								},
 								{
 									"key": "size",
-									"value": "5"
+									"value": "35"
 								},
 								{
 									"key": "sortBy",
@@ -192,7 +192,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjYW9jYW8yNCIsImlhdCI6MTY3NzQ2ODMyMywiZXhwIjoxNjc3NDcxMzIzfQ.B1xYN6cAHg4TaOPhrgDqO6Chl2nU_JNT_YXQ-lXFOpgFO9GOHx3rZg-en04CJv4bkqcfycUvnXeUDtIRjH8NUA",
+								"value": "Bearer {{token}}",
 								"type": "default"
 							}
 						],
@@ -206,15 +206,65 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8090/document/index",
+							"raw": "http://localhost:{{port}}/document/index",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8090",
+							"port": "{{port}}",
 							"path": [
 								"document",
 								"index"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "testController all",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJCaW5oVGh1b25nMyIsImlhdCI6MTY3ODI1MTMxMiwiZXhwIjoxNjc4MjU0MzEyfQ.Gj_UQa8jhVmfs2Ro0xFQlg5D-xoQJ6aDO9vPl2XFXSC6igYte4IZd3FfJaMRWadV5McmidhL_jmbylLXcEOZ0A",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"caocao\",\r\n    \"password\": \"hihi\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{port}}/api/test/all",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"test",
+								"all"
 							]
 						}
 					},
@@ -224,6 +274,29 @@
 		},
 		{
 			"name": "signin Token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Get access token return status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Get access token has value\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"\r",
+							"    pm.expect(jsonData).to.have.property('accessToken');\r",
+							"    pm.environment.set(\"token\", jsonData.id);\r",
+							"    \r",
+							"    pm.expect(jsonData).to.have.property('refreshToken');\r",
+							"    pm.environment.set(\"refresh_token\", jsonData.refreshToken);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [
@@ -236,7 +309,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"A1\",\r\n    \"password\": \"hihi\"\r\n}",
+					"raw": "{\r\n    \"username\": \"BinhThuong3\",\r\n    \"password\": \"hihi\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -272,7 +345,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"refreshToken\":\"eyJhbGciOiJIUzUxMiJ9.eyJhIjoiYiIsImEyIjoiYjIiLCJhMyI6ImIzIiwiZXhwIjoxNjc3NTU1OTg3LCJpYXQiOjE2Nzc1NTU4Njd9._t35E9LcK370VjPhaiiQ0GoywwDfnh8RsxzUgthy_AuqULzYy5KTCzHeZ5uq-6q2PUYmFwpO8qBblDG-C0-GwA\"\r\n}",
+					"raw": "{\r\n    \"refreshToken\":\"{{refresh_token}}\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"

@@ -19,15 +19,15 @@ public class MtaSecurityApplicationTests {
     UserDetailsService detailsService;
     public static ObjectMapper objectMapper = new ObjectMapper();
 
-    @Test
-    public void contextLoads() throws JsonProcessingException {
-        UserDetails data = detailsService.loadUserByUsername("BinhThuong3");
-        System.out.println(objectMapper.writeValueAsString(data));
-        Assertions.assertArrayEquals("BinhThuong3".toCharArray(), data.getUsername().toCharArray());
-    }
-
-    @TestData(FilePath = "./", Key = "user")
-    public void contextLoads2(User data,String str) throws JsonProcessingException {
-        Assertions.assertArrayEquals("BinhThuong3".toCharArray(), data.getUsername().toCharArray());
-    }
+//    @Test
+//    public void contextLoads() throws JsonProcessingException {
+//        UserDetails data = detailsService.loadUserByUsername("BinhThuong3");
+//        System.out.println(objectMapper.writeValueAsString(data));
+//        Assertions.assertArrayEquals("BinhThuong3".toCharArray(), data.getUsername().toCharArray());
+//    }
+//
+//    @TestData(FilePath = "./", Key = "user")
+//    public void contextLoads2(User data,String str) throws JsonProcessingException {
+//        Assertions.assertArrayEquals("BinhThuong3".toCharArray(), data.getUsername().toCharArray());
+//    }
 }

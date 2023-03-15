@@ -1,7 +1,7 @@
 package com.mta.jwt.demo.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.sun.istack.internal.Nullable;
+//import com.sun.istack.internal.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -38,7 +38,7 @@ public class User {
     @Column(name = "account_non_locked")
     private Boolean accountNonLocked;
     @Column(name = "lock_time")
-    @Nullable
+    //@Nullable
     private Date lockTime;
     @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)

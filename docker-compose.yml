@@ -25,7 +25,7 @@ services:
       - jwt-network
 
   SRPING_BOOT_JWT:
-    image: jwt-demo:latest
+    image: jwt-demo-v2:latest
     container_name: jwt-demo-spring
     build:
       dockerfile: Dockerfile
@@ -33,16 +33,16 @@ services:
       - "8090:8080"
     environment:
       # C1: config type json
-      SPRING_APPLICATION_JSON: '{
-          "spring.datasource.url" : "jdbc:mysql://SQL_JWT:3306/EL4U_V2?allowPublicKeyRetrieval=true&useSSL=false",
-          "spring.datasource.username" : "ducla",
-          "spring.datasource.password" : "ducla"
-      }'
+#      SPRING_APPLICATION_JSON: '{
+#          "spring.datasource.url" : "jdbc:mysql://SQL_JWT:3306/EL4U_V2?allowPublicKeyRetrieval=true&useSSL=false",
+#          "spring.datasource.username" : "ducla",
+#          "spring.datasource.password" : "ducla"
+#      }'
 
       # C2: [SPRING_DATASOURCE_URL <=> spring.datasource.url]
-      #      SPRING_DATASOURCE_URL : jdbc:mysql://SQL_JWT:3306/EL4U_V2?allowPublicKeyRetrieval=true&useSSL=false
-      #      SPRING_DATASOURCE_USERNAME : ducla
-      #      SPRING_DATASOURCE_PASSWORD : ducla
+            SPRING_DATASOURCE_URL : jdbc:mysql://SQL_JWT:3306/EL4U_V2?allowPublicKeyRetrieval=true&useSSL=false
+            SPRING_DATASOURCE_USERNAME : ducla
+            SPRING_DATASOURCE_PASSWORD : ducla
     volumes:
       - ./:/app
     networks:

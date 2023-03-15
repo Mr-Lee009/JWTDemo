@@ -93,6 +93,7 @@ public class AuthController {
 
     /**
      * {@code ham dang nhap nang cao hon kem tra TK co bi khoa hay ko}
+     *
      * @param loginRequest object to login
      */
     @PostMapping("/signin")
@@ -115,8 +116,8 @@ public class AuthController {
         } else if (!user.getAccountNonLocked()) {
             if (userDetailsService.unlockWhenTimeExpired(user)) {
                 return ResponseEntity.ok(ErrorMessage.unLockMessage());
-            }
-            return ResponseEntity.ok(ErrorMessage.lockMessage());
+            } else
+                return ResponseEntity.ok(ErrorMessage.lockMessage());
         }
 
 

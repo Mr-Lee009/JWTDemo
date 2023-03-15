@@ -15,6 +15,7 @@
     <name>MTASecurity</name>
     <description>Demo project for Spring Boot Secuity</description>
     <properties>
+        <start-class>com.mta.jwt.demo.MtaSecurityApplication</start-class>
         <java.version>8</java.version>
         <repackage.classifier/>
         <spring-native.version>0.10.0</spring-native.version>

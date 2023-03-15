@@ -64,20 +64,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-//        APIKeyAuthFilter filter = new APIKeyAuthFilter(principalRequestHeader);
-//        filter.setAuthenticationManager(new AuthenticationManager() {
-//            @Override
-//            public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-//                String principal = (String) authentication.getPrincipal();
-//                if (!principalRequestValue.equals(principal))
-//                {
-//                    throw new BadCredentialsException("The API key was not found or not the expected value.");
-//                }
-//                authentication.setAuthenticated(true);
-//                return authentication;
-//            }
-//        });
-
         http.cors().and().csrf().disable();
 
         // don't authenticate this particular request

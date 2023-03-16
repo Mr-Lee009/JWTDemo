@@ -10,4 +10,5 @@ public class MtaSecurityApplication {
     public static void main(String[] args) {
         SpringApplication.run(MtaSecurityApplication.class, args);
     }
+
 }

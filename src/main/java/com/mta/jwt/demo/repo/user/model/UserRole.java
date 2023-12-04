@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Data
 public class UserRole {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -17,12 +17,4 @@ public class UserRole {
     private int userId;
     @Column(name = "role_id")
     private int roleId;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 }

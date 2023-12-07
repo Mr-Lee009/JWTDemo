@@ -97,7 +97,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 "/swagger/**",
                 "/swagger-resources/**",
                 "/v2/**",
-                "/v3/**"
+                "/v3/**",
+                "/signup",
+                "/refreshtoken",
+                "/signin"
         ).permitAll();
 
 
@@ -108,7 +111,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // store user's state.
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
                 .and()
-                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         //http.addFilter(filter);
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
@@ -116,5 +119,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("/signup",
+                "/refreshtoken",
+                "/signin");
     }
 }

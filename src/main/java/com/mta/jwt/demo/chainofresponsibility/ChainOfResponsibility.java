@@ -26,6 +26,10 @@ public class ChainOfResponsibility {
         public SupportHandler(){
 
         }
+
+        public void setNext(SaleSupportHandler next){
+            this.next = next;
+        }
         public SupportHandler(SupportHandler next){
             this.next = next;
         }
@@ -51,12 +55,13 @@ public class ChainOfResponsibility {
        
         @Override
         protected boolean canHandle(ChainOfResponsibility.SupportRequest request) {
-            return ("TechnicalSupport").equals(request.type);
+            return ("technical").equals(request.type);
         }
 
         @Override
         protected void doSomething(ChainOfResponsibility.SupportRequest request) {
             // TODO
+            
         }
     }
 
@@ -68,7 +73,24 @@ public class ChainOfResponsibility {
 
         @Override
         protected boolean canHandle(ChainOfResponsibility.SupportRequest request) {
-            return "SaleSupport".equals(request.type);
+            return "sale".equals(request.type);
+        }
+
+        @Override
+        protected void doSomething(ChainOfResponsibility.SupportRequest request) {
+            // TODO
+        }
+    }
+
+    public static class NetworkSupportHandler extends SupportHandler{
+        
+        public NetworkSupportHandler(SupportHandler next){
+            super(next);
+        }
+
+        @Override
+        protected boolean canHandle(ChainOfResponsibility.SupportRequest request) {
+            return "nextwork".equals(request.type);
         }
 
         @Override
@@ -78,6 +100,17 @@ public class ChainOfResponsibility {
     }
 
     public static void main(String[] args) {
-        var t = new TechnicalSupportHandler();
+        SaleSupportHandler saleSupportHandler = new SaleSupportHandler();
+        TechnicalSupport technicalSupport = new TechnicalSupportHandler();
+        NetworkSupportHandler networkSupportHandler = new NetworkSupportHandler();
+        
+        saleSupportHandler.setNext(technicalSupport);
+        technicalSupport.setNext(networkSupportHandler);
+
+        // Tạo một yêu cầu hỗ trợ
+        ChainOfResponsibility.SupportRequest request = new ChainOfResponsibility.SupportRequest("technical", "This is a technical support request.");
+
+        // Gửi yêu cầu đến danh sách các bộ phận hỗ trợ
+        saleSupportHandler.handle(request);
     }
 }
